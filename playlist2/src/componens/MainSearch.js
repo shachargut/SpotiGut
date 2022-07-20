@@ -19,10 +19,11 @@ export default function MainSearch() {
   const dispatch = useDispatch();
   console.log("NewPL",NewPL);
   let addToPlaylist = function(v){
-    let a = playList.find((item)=>v.id===item.id)
+    let a = NewPL.find((item)=>v.id===item.id)
     if(a){return}
     console.log(playList);
-    setPlayList([...playList,v])
+    dispatch(addToPlaylist1(v));
+    //setPlayList([...playList,v])
   }
 
   const options = {
@@ -49,15 +50,11 @@ export default function MainSearch() {
   }, [search]);
 
   useEffect(()=>{
-    let a = JSON.stringify(playList)
-    localStorage.setItem("playList",a)
-  },[playList])
+    // let a = JSON.stringify(NewPL)
+    // localStorage.setItem("NewPL",a)
+    console.log("useEffect occoured");
+  },[NewPL])
 
-  // useEffect(()=>{
-  //   let a = localStorage.getItem("playList")
-  //    let jplayList= JSON.parse(a)
-  //   setPlayList(jplayList)
-  // },[])
   
   if (!result) {
     return <p>Data is loading...</p>;
@@ -67,17 +64,17 @@ export default function MainSearch() {
     <div className='playlist'>
     {result?.map((v)=>{
       return(
-       <div key={Math.random()} className="cardSearch">
+       <div  key={Math.random()} className="cardSearch">
      <img className='imgSong' onClick={()=>setPlayer(v)} src={v.thumbnail.url} height="200px" alt="avazar"/>
       <div className='description'>
-      <div><h5>{v.title}</h5></div>
+      <div className='titleSong' onClick={()=>setPlayer(v)}><h5>{v.title}</h5></div>
       <span>{v.views} views • {v.uploadedAt}</span>
       <br/>
       <div className='channelDiv'><p>🎵{v.channel.name}</p>
       <img className='channelImg' src={v.channel.icon} height="20px" alt="avazar"/>
       </div></div>
       <div className='addPL'>
-      <Button variant="outline-secondary" onClick={()=>dispatch(addToPlaylist1(v))}>add to playList</Button></div>
+      <Button variant="outline-secondary" onClick={()=>addToPlaylist(v)}>add to playList</Button></div>
       </div>
       )})}
     </div>

@@ -6,6 +6,8 @@ import { Button } from 'react-bootstrap'
 
 function Player() {
   const[player,setPlayer] = useContext(playerContext)
+  // שימוש ברידקס במקום קונטקסט
+  
   const [ix,setIx] = useState();
   function remove(){
     setPlayer('')

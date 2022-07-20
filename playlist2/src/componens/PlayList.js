@@ -1,13 +1,16 @@
 import React, { useContext, useEffect } from 'react'
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import {playListContext} from './Layout'
-import { playerContext } from './Layout'
-import Player from './Player'
+import { playerContext } from './Layout' 
+import {removeFromPlaylist1} from '../redux/action'
 
 function PlayList() {
+
+    //  דגומא לשימוש ברידקס מחליף את קונטקסט
     const playList = useSelector((state)=> state.playList)
+    const dispatch = useDispatch();
+
+    // אפשרות לשימוש ישן  בקונטקסט
     //const [playList,setPlayList] = useContext(playListContext)
     const[player,setPlayer] = useContext(playerContext)
     let removeFromPL = function(v){
@@ -20,20 +23,20 @@ function PlayList() {
       },[])
   return (
       <div className='playlist'>
-    <h3>PlayList</h3> 
+    <h3>PlayList {playList.length} songs</h3> 
      {playList?.map((v)=>
                 {return(
                     <>
                 <div key={Math.random()} className="cardSearch">
                 <img className="imgSong" onClick={()=>setPlayer(v)} src={v.thumbnail.url} height="200px" alt="avazar"/>
                 <div className='description'>
-                <div><h5>{v.title}</h5></div>
+                <div className='titleSong'><h5>{v.title}</h5></div>
                 <span>{v.views} views </span>
                 <div className='channelDiv'><p>🎵{v.channel.name}</p>
                 <img className='channelImg' src={v.channel.icon} height="20px" alt="avazar"/>
                 </div></div>
                 <div className='addPL'>
-                <Button variant="outline-secondary" onClick={()=>removeFromPL(v)}>הסר</Button></div>
+                <Button variant="outline-secondary" onClick={()=>dispatch(removeFromPlaylist1(v.id))}>הסר</Button></div>
                 </div>
                 </>
                 )})}
